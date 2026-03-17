@@ -23,6 +23,9 @@ fi
 if [ "$arch" = "aarch64" ]; then
     arch="arm64"
 fi
+if [ "$arch" = "loongarch64" ]; then
+    arch="loong64"
+fi
 
 install_go() {
     if grep "NAME=" /etc/os-release | grep  "Alpine"; then
@@ -32,7 +35,7 @@ install_go() {
         return
     fi
 
-    GO_VER=1.19
+    GO_VER=1.21.4
     wget --quiet https://go.dev/dl/go${GO_VER}.linux-${arch}.tar.gz > /dev/null
     rm -rf /usr/local/go && tar -C /usr/local -xzf go${GO_VER}.linux-${arch}.tar.gz
     /usr/local/go/bin/go version
