@@ -23,6 +23,9 @@ fi
 if [ "$arch" = "aarch64" ]; then
     arch="arm64"
 fi
+if [ "$arch" = "loongarch64" ]; then
+    arch="loong64"
+fi
 
 install_go() {
     if grep "NAME=" /etc/os-release | grep  "Alpine"; then
@@ -32,10 +35,12 @@ install_go() {
         return
     fi
 
-    GO_VER=1.19
-    wget --quiet https://go.dev/dl/go${GO_VER}.linux-${arch}.tar.gz > /dev/null
+    GO_VER=1.25.8
+#    wget --quiet https://go.dev/dl/go${GO_VER}.linux-${arch}.tar.gz > /dev/null
+    wget https://ftp.loongnix.cn/toolchain/golang/go-1.25/abi1.0/go${GO_VER}.linux-${arch}.tar.gz > /dev/null
     rm -rf /usr/local/go && tar -C /usr/local -xzf go${GO_VER}.linux-${arch}.tar.gz
     /usr/local/go/bin/go version
+    /usr/local/go/bin/go env -w GOPROXY=https://goproxy.cn,direct
 }
 
 case_opt=$1
